@@ -67,18 +67,20 @@ func (d *DaemonBuilder) Build(imageName string, p *project.Project, service proj
 
 	client := d.context.ClientFactory.Create(service)
 
-	logrus.Infof("Building %s...", imageName)
-
 	outFd, isTerminalOut := term.GetFdInfo(os.Stdout)
-
 	response, err := client.ImageBuild(context.Background(), types.ImageBuildOptions{
 		Context:     body,
 		Tags:        []string{imageName},
 		NoCache:     d.context.NoCache,
 		Remove:      true,
-		Dockerfile:  service.Config().Dockerfile,
+		Dockerfile:  service.Config().Dockerfile, // <- This is seemingly OK, but daemon can't find it? Perhaps too new a client??
 		AuthConfigs: d.context.ConfigFile.AuthConfigs,
 	})
+
+	if err != nil {
+		logrus.Infof("ERROR %s...", err.Error())
+		return err
+	}
 
 	err = jsonmessage.DisplayJSONMessagesStream(response.Body, buildBuff, outFd, isTerminalOut, nil)
 	if err != nil {
@@ -100,16 +102,22 @@ func CreateTar(p *project.Project, name string) (io.ReadCloser, error) {
 
 	serviceConfig := p.Configs[name]
 	root := serviceConfig.Build
+
+	fmt.Println("Service root: ", root)
+	fmt.Println("Docker file for tar: ", serviceConfig.Dockerfile)
+
 	dockerfileName := filepath.Join(root, serviceConfig.Dockerfile)
 
 	absRoot, err := filepath.Abs(root)
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("Absolute root: ", absRoot)
 
 	filename := dockerfileName
 
 	if dockerfileName == "" {
+		fmt.Println("Absolute root: ", absRoot)
 		// No -f/--file was specified so use the default
 		dockerfileName = DefaultDockerfileName
 		filename = filepath.Join(absRoot, dockerfileName)

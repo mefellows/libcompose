@@ -1,6 +1,7 @@
 package docker
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/docker/docker/runconfig/opts"
@@ -54,9 +55,14 @@ func ConvertToAPI(s *Service) (*ConfigWrapper, error) {
 }
 
 func volumes(c *project.ServiceConfig, ctx *Context) map[string]struct{} {
+	fmt.Println("Pretty sure volumes made here!")
+
 	volumes := make(map[string]struct{}, len(c.Volumes))
 	for k, v := range c.Volumes {
-		vol := ctx.ResourceLookup.ResolvePath(v, ctx.ComposeFiles[0])
+		fmt.Println("k", k, "v", v)
+		// vol := ctx.ResourceLookup.ResolvePath(v, ctx.ComposeFiles[0])
+		vol := v // TODO: Fix this resource lookup business
+		fmt.Println("vol:", vol)
 
 		c.Volumes[k] = vol
 		if isVolume(vol) {

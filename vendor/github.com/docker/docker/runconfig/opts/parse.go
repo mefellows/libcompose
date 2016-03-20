@@ -203,11 +203,13 @@ func Parse(cmd *flag.FlagSet, args []string) (*container.Config, *container.Host
 	}
 
 	var binds []string
+	fmt.Println("Docker lib: binds!")
 	// add any bind targets to the list of container volumes
 	for bind := range flVolumes.GetMap() {
 		if arr := volumeSplitN(bind, 2); len(arr) > 1 {
 			// after creating the bind mount we want to delete it from the flVolumes values because
 			// we do not want bind mounts being committed to image configs
+			fmt.Println("Docker lib appending bind:", bind)
 			binds = append(binds, bind)
 			flVolumes.Delete(bind)
 		}

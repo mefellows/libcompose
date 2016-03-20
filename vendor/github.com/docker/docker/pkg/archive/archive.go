@@ -350,6 +350,7 @@ func (ta *tarAppender) addTarFile(path, name string) error {
 }
 
 func createTarFile(path, extractDir string, hdr *tar.Header, reader io.Reader, Lchown bool, chownOpts *TarChownOptions) error {
+	fmt.Println("CreateTarFile: Path: ", path)
 	// hdr.Mode is in linux format, which we can use for sycalls,
 	// but for os.Foo() calls we need the mode converted to os.FileMode,
 	// so use hdrInfo.Mode() (they differ for e.g. setuid bits)
@@ -357,6 +358,7 @@ func createTarFile(path, extractDir string, hdr *tar.Header, reader io.Reader, L
 
 	switch hdr.Typeflag {
 	case tar.TypeDir:
+		fmt.Println("CreateTarFile: Path is a DIR: ")
 		// Create directory unless it exists as a directory already.
 		// In that case we just want to merge the two
 		if fi, err := os.Lstat(path); !(err == nil && fi.IsDir()) {
@@ -366,6 +368,7 @@ func createTarFile(path, extractDir string, hdr *tar.Header, reader io.Reader, L
 		}
 
 	case tar.TypeReg, tar.TypeRegA:
+		fmt.Println("CreateTarFile: Path is a FILE: ")
 		// Source is regular file
 		file, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, hdrInfo.Mode())
 		if err != nil {
@@ -378,12 +381,14 @@ func createTarFile(path, extractDir string, hdr *tar.Header, reader io.Reader, L
 		file.Close()
 
 	case tar.TypeBlock, tar.TypeChar, tar.TypeFifo:
+		fmt.Println("CreateTarFile: Path is a BLOCK: ")
 		// Handle this is an OS-specific way
 		if err := handleTarTypeBlockCharFifo(hdr, path); err != nil {
 			return err
 		}
 
 	case tar.TypeLink:
+		fmt.Println("CreateTarFile: Path is a LINK: ")
 		targetPath := filepath.Join(extractDir, hdr.Linkname)
 		// check for hardlink breakout
 		if !strings.HasPrefix(targetPath, extractDir) {
@@ -394,6 +399,7 @@ func createTarFile(path, extractDir string, hdr *tar.Header, reader io.Reader, L
 		}
 
 	case tar.TypeSymlink:
+		fmt.Println("CreateTarFile: Path is a SYM: ")
 		// 	path 				-> hdr.Linkname = targetPath
 		// e.g. /extractDir/path/to/symlink 	-> ../2/file	= /extractDir/path/2/file
 		targetPath := filepath.Join(filepath.Dir(path), hdr.Linkname)
@@ -408,6 +414,7 @@ func createTarFile(path, extractDir string, hdr *tar.Header, reader io.Reader, L
 		}
 
 	case tar.TypeXGlobalHeader:
+		fmt.Println("CreateTarFile: Path is a header: ")
 		logrus.Debugf("PAX Global Extended Headers found and ignored")
 		return nil
 
@@ -472,14 +479,17 @@ func Tar(path string, compression Compression) (io.ReadCloser, error) {
 // TarWithOptions creates an archive from the directory at `path`, only including files whose relative
 // paths are included in `options.IncludeFiles` (if non-nil) or not in `options.ExcludePatterns`.
 func TarWithOptions(srcPath string, options *TarOptions) (io.ReadCloser, error) {
-
+	fmt.Println("TarWithOptons srcPath:", srcPath)
+	fmt.Println(fmt.Sprintf("TarWithOptons options: %v", options))
 	// Fix the source path to work with long path names. This is a no-op
 	// on platforms other than Windows.
-	srcPath = fixVolumePathPrefix(srcPath)
+	// srcPath = "c:\\node" // TODO: works
+	srcPath = fixVolumePathPrefix(srcPath) // TODO: looks like if the right path comes in this function can hang around. '.' fucks up nicely though :()
 
 	patterns, patDirs, exceptions, err := fileutils.CleanPatterns(options.ExcludePatterns)
 
 	if err != nil {
+		fmt.Println("TarWithOptions 1 error: ", err.Error())
 		return nil, err
 	}
 
@@ -487,6 +497,7 @@ func TarWithOptions(srcPath string, options *TarOptions) (io.ReadCloser, error) 
 
 	compressWriter, err := CompressStream(pipeWriter, options.Compression)
 	if err != nil {
+		fmt.Println("TarWithOptions 2 error: ", err.Error())
 		return nil, err
 	}
 
@@ -522,6 +533,7 @@ func TarWithOptions(srcPath string, options *TarOptions) (io.ReadCloser, error) 
 
 		stat, err := os.Lstat(srcPath)
 		if err != nil {
+			fmt.Println("TarWithOptions 3 while looking for srcPath", srcPath, "error: ", err.Error())
 			return
 		}
 
@@ -546,19 +558,26 @@ func TarWithOptions(srcPath string, options *TarOptions) (io.ReadCloser, error) 
 		seen := make(map[string]bool)
 
 		for _, include := range options.IncludeFiles {
+			fmt.Println("Including file:", include)
 			rebaseName := options.RebaseNames[include]
 
 			walkRoot := getWalkRoot(srcPath, include)
 			filepath.Walk(walkRoot, func(filePath string, f os.FileInfo, err error) error {
+
 				if err != nil {
 					logrus.Debugf("Tar: Can't stat file %s to tar: %s", srcPath, err)
+					fmt.Printf("Tar: Can't stat file %s to tar: %s\n", srcPath, err)
 					return nil
 				}
+				// fmt.Println("walking file tree at path", filePath, "file: ", f.Name(), f.IsDir())
 
 				relFilePath, err := filepath.Rel(srcPath, filePath)
 				if err != nil || (!options.IncludeSourceDir && relFilePath == "." && f.IsDir()) {
 					// Error getting relative path OR we are looking
 					// at the source directory path. Skip in both situations.
+					if err != nil {
+						fmt.Println("TarWithOptions 4 error: ", err.Error())
+					}
 					return nil
 				}
 
@@ -577,6 +596,7 @@ func TarWithOptions(srcPath string, options *TarOptions) (io.ReadCloser, error) 
 					skip, err = fileutils.OptimizedMatches(relFilePath, patterns, patDirs)
 					if err != nil {
 						logrus.Debugf("Error matching %s: %v", relFilePath, err)
+						fmt.Println("TarWithOptions 5 error: ", err.Error())
 						return err
 					}
 				}
@@ -585,10 +605,12 @@ func TarWithOptions(srcPath string, options *TarOptions) (io.ReadCloser, error) 
 					if !exceptions && f.IsDir() {
 						return filepath.SkipDir
 					}
+					fmt.Println("TarWithOptions 6 skip")
 					return nil
 				}
 
 				if seen[relFilePath] {
+					fmt.Println("TarWithOptions 7 seen")
 					return nil
 				}
 				seen[relFilePath] = true
