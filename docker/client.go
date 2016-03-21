@@ -12,7 +12,7 @@ import (
 	"github.com/docker/engine-api/client"
 	"github.com/docker/go-connections/sockets"
 	"github.com/docker/go-connections/tlsconfig"
-	"github.com/docker/libcompose/version"
+	"github.com/mefellows/libcompose/version"
 )
 
 const (

@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/codegangsta/cli"
-	"github.com/docker/libcompose/project"
+	"github.com/mefellows/libcompose/project"
 )
 
 // ProjectFactory is an interface that helps creating libcompose project.

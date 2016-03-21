@@ -1,6 +1,6 @@
 # libcompose
 
-[![GoDoc](https://godoc.org/github.com/docker/libcompose?status.png)](https://godoc.org/github.com/docker/libcompose)
+[![GoDoc](https://godoc.org/github.com/mefellows/libcompose?status.png)](https://godoc.org/github.com/mefellows/libcompose)
 [![Jenkins Build Status](https://jenkins.dockerproject.org/view/Libcompose/job/Libcompose%20Master/badge/icon)](https://jenkins.dockerproject.org/view/Libcompose/job/Libcompose%20Master/)
 
 A Go library for Docker Compose. It does everything the command-line tool does, but from within Go -- read Compose files, start them, scale them, etc.
@@ -13,8 +13,8 @@ package main
 import (
 	"log"
 
-	"github.com/docker/libcompose/docker"
-	"github.com/docker/libcompose/project"
+	"github.com/mefellows/libcompose/docker"
+	"github.com/mefellows/libcompose/project"
 )
 
 func main() {
@@ -50,13 +50,13 @@ docker build -t "libcompose-dev:refactor-makefile" .
 ---> Making bundle: binary (in .)
 Number of parallel builds: 4
 
--->      darwin/386: github.com/docker/libcompose/cli/main
--->    darwin/amd64: github.com/docker/libcompose/cli/main
--->       linux/386: github.com/docker/libcompose/cli/main
--->     linux/amd64: github.com/docker/libcompose/cli/main
--->       linux/arm: github.com/docker/libcompose/cli/main
--->     windows/386: github.com/docker/libcompose/cli/main
--->   windows/amd64: github.com/docker/libcompose/cli/main
+-->      darwin/386: github.com/mefellows/libcompose/cli/main
+-->    darwin/amd64: github.com/mefellows/libcompose/cli/main
+-->       linux/386: github.com/mefellows/libcompose/cli/main
+-->     linux/amd64: github.com/mefellows/libcompose/cli/main
+-->       linux/arm: github.com/mefellows/libcompose/cli/main
+-->     windows/386: github.com/mefellows/libcompose/cli/main
+-->   windows/amd64: github.com/mefellows/libcompose/cli/main
 
 $ ls bundles
 libcompose-cli_darwin-386*    libcompose-cli_linux-amd64*      libcompose-cli_windows-amd64.exe*
@@ -109,11 +109,11 @@ docker build -t "libcompose-dev:refactor-makefile" .
 #[…]
 ---> Making bundle: test-unit (in .)
 + go test -cover -coverprofile=cover.out ./docker
-ok      github.com/docker/libcompose/docker     0.019s  coverage: 4.6% of statements
+ok      github.com/mefellows/libcompose/docker     0.019s  coverage: 4.6% of statements
 + go test -cover -coverprofile=cover.out ./project
-ok      github.com/docker/libcompose/project    0.010s  coverage: 8.4% of statements
+ok      github.com/mefellows/libcompose/project    0.010s  coverage: 8.4% of statements
 + go test -cover -coverprofile=cover.out ./version
-ok      github.com/docker/libcompose/version    0.002s  coverage: 0.0% of statements
+ok      github.com/mefellows/libcompose/version    0.002s  coverage: 0.0% of statements
 
 Test success
 ```

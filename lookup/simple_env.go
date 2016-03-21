@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/docker/libcompose/project"
+	"github.com/mefellows/libcompose/project"
 )
 
 // OsEnvLookup is a "bare" structure that implements the project.EnvironmentLookup interface

@@ -3,7 +3,7 @@ package app
 import (
 	"github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
-	"github.com/docker/libcompose/docker"
+	"github.com/mefellows/libcompose/docker"
 )
 
 // DockerClientFlags defines the flags that are specific to the docker client,

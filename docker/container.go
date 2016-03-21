@@ -21,9 +21,9 @@ import (
 	"github.com/docker/engine-api/types"
 	"github.com/docker/engine-api/types/container"
 	"github.com/docker/go-connections/nat"
-	"github.com/docker/libcompose/logger"
-	"github.com/docker/libcompose/project"
-	util "github.com/docker/libcompose/utils"
+	"github.com/mefellows/libcompose/logger"
+	"github.com/mefellows/libcompose/project"
+	util "github.com/mefellows/libcompose/utils"
 )
 
 // DefaultTag is the name of the default tag of an image.

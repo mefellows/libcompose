@@ -1,6 +1,6 @@
 package docker
 
-import "github.com/docker/libcompose/project"
+import "github.com/mefellows/libcompose/project"
 
 // ServiceFactory is an implementation of project.ServiceFactory.
 type ServiceFactory struct {

@@ -3,8 +3,8 @@ package docker
 import (
 	"github.com/Sirupsen/logrus"
 
-	"github.com/docker/libcompose/lookup"
-	"github.com/docker/libcompose/project"
+	"github.com/mefellows/libcompose/lookup"
+	"github.com/mefellows/libcompose/project"
 )
 
 // NewProject creates a Project with the specified context.

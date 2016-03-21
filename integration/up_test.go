@@ -8,7 +8,7 @@ import (
 
 	"github.com/docker/engine-api/types"
 	"github.com/docker/go-connections/nat"
-	"github.com/docker/libcompose/utils"
+	"github.com/mefellows/libcompose/utils"
 
 	. "gopkg.in/check.v1"
 )

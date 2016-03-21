@@ -6,8 +6,8 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/docker/engine-api/client"
 	"github.com/docker/go-connections/nat"
-	"github.com/docker/libcompose/project"
-	"github.com/docker/libcompose/utils"
+	"github.com/mefellows/libcompose/project"
+	"github.com/mefellows/libcompose/utils"
 )
 
 // Service is a project.Service implementations.

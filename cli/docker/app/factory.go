@@ -2,10 +2,10 @@ package app
 
 import (
 	"github.com/codegangsta/cli"
-	"github.com/docker/libcompose/cli/command"
-	"github.com/docker/libcompose/cli/logger"
-	"github.com/docker/libcompose/docker"
-	"github.com/docker/libcompose/project"
+	"github.com/mefellows/libcompose/cli/command"
+	"github.com/mefellows/libcompose/cli/logger"
+	"github.com/mefellows/libcompose/docker"
+	"github.com/mefellows/libcompose/project"
 )
 
 // ProjectFactory is a struct that hold the app.ProjectFactory implementation.

@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/docker/libcompose/logger"
+	"github.com/mefellows/libcompose/logger"
 )
 
 var projectRegexp = regexp.MustCompile("[^a-zA-Z0-9_.-]")

@@ -2,7 +2,7 @@ package docker
 
 import (
 	"github.com/docker/engine-api/client"
-	"github.com/docker/libcompose/project"
+	"github.com/mefellows/libcompose/project"
 )
 
 // ClientFactory is a factory to create docker clients.

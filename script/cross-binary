@@ -19,6 +19,6 @@ rm -f libcompose-cli*
 # Build binaries
 gox "${OS_PLATFORM_ARG[@]}" "${OS_ARCH_ARG[@]}" \
     -output="bundles/libcompose-cli_{{.OS}}-{{.Arch}}" \
-    -ldflags="-w -X github.com/docker/libcompose/version.GITCOMMIT=`git rev-parse --short HEAD`" \
+    -ldflags="-w -X github.com/mefellows/libcompose/version.GITCOMMIT=`git rev-parse --short HEAD`" \
     ./cli/main
 

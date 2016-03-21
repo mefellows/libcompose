@@ -10,8 +10,8 @@ import (
 	"github.com/docker/engine-api/types/strslice"
 	"github.com/docker/go-connections/nat"
 	"github.com/docker/go-units"
-	"github.com/docker/libcompose/project"
-	"github.com/docker/libcompose/utils"
+	"github.com/mefellows/libcompose/project"
+	"github.com/mefellows/libcompose/utils"
 )
 
 // ConfigWrapper wraps Config, HostConfig and NetworkingConfig for a container.

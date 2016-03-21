@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/docker/libcompose/docker"
-	"github.com/docker/libcompose/project"
+	"github.com/mefellows/libcompose/docker"
+	"github.com/mefellows/libcompose/project"
 )
 
 func main() {

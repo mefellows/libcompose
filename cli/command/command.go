@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/codegangsta/cli"
-	"github.com/docker/libcompose/cli/app"
-	"github.com/docker/libcompose/project"
+	"github.com/mefellows/libcompose/cli/app"
+	"github.com/mefellows/libcompose/project"
 )
 
 // CreateCommand defines the libcompose create subcommand.

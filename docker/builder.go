@@ -20,7 +20,7 @@ import (
 	"github.com/docker/docker/pkg/streamformatter"
 	"github.com/docker/docker/pkg/term"
 	"github.com/docker/engine-api/types"
-	"github.com/docker/libcompose/project"
+	"github.com/mefellows/libcompose/project"
 )
 
 // DefaultDockerfileName is the default name of a Dockerfile

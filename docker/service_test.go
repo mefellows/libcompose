@@ -1,7 +1,7 @@
 package docker
 
 import (
-	"github.com/docker/libcompose/project"
+	"github.com/mefellows/libcompose/project"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

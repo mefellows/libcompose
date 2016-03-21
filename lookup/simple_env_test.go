@@ -3,7 +3,7 @@ package lookup
 import (
 	"testing"
 
-	"github.com/docker/libcompose/project"
+	"github.com/mefellows/libcompose/project"
 )
 
 func TestOsEnvLookup(t *testing.T) {

@@ -3,7 +3,7 @@ package docker
 import (
 	"encoding/json"
 
-	"github.com/docker/libcompose/utils"
+	"github.com/mefellows/libcompose/utils"
 )
 
 // Label represents a docker label.

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PROJECT=github.com/docker/libcompose
+PROJECT=github.com/mefellows/libcompose
 
 # Downloads dependencies into vendor/ directory
 mkdir -p vendor/src

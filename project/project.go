@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/docker/libcompose/logger"
-	"github.com/docker/libcompose/utils"
+	"github.com/mefellows/libcompose/logger"
+	"github.com/mefellows/libcompose/utils"
 )
 
 // ServiceState holds the state of a service.

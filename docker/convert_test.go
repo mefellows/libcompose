@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/docker/libcompose/lookup"
-	"github.com/docker/libcompose/project"
+	"github.com/mefellows/libcompose/lookup"
+	"github.com/mefellows/libcompose/project"
 	shlex "github.com/flynn/go-shlex"
 	"github.com/stretchr/testify/assert"
 )
