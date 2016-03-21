@@ -318,7 +318,6 @@ func (c *Container) getHash() string {
 }
 
 func volumeBinds(volumes map[string]struct{}, container *types.ContainerJSON) []string {
-	fmt.Println("Volume binding BITCH")
 	result := make([]string, 0, len(container.Mounts))
 	for _, mount := range container.Mounts {
 		if _, ok := volumes[mount.Destination]; ok {
@@ -358,7 +357,6 @@ func (c *Container) createContainer(imageName, oldContainer string) (*types.Cont
 		configWrapper.HostConfig.Binds = util.Merge(configWrapper.HostConfig.Binds, volumeBinds(configWrapper.Config.Volumes, &info))
 	}
 
-	fmt.Println(fmt.Printf("Creating container %s %#v", c.name, configWrapper.HostConfig.Binds))
 	logrus.Debugf("Creating container %s %#v", c.name, configWrapper)
 
 	container, err := c.client.ContainerCreate(configWrapper.Config, configWrapper.HostConfig, configWrapper.NetworkingConfig, c.name)

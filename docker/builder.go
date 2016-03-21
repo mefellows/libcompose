@@ -103,22 +103,16 @@ func CreateTar(p *project.Project, name string) (io.ReadCloser, error) {
 	serviceConfig := p.Configs[name]
 	root := serviceConfig.Build
 
-	fmt.Println("Service root: ", root)
-	fmt.Println("Docker file for tar: ", serviceConfig.Dockerfile)
-
 	dockerfileName := filepath.Join(root, serviceConfig.Dockerfile)
 
 	absRoot, err := filepath.Abs(root)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("Absolute root: ", absRoot)
 
 	filename := dockerfileName
 
 	if dockerfileName == "" {
-		fmt.Println("Absolute root: ", absRoot)
-		// No -f/--file was specified so use the default
 		dockerfileName = DefaultDockerfileName
 		filename = filepath.Join(absRoot, dockerfileName)
 
