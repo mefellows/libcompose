@@ -1,14 +1,15 @@
 package docker
 
 import (
+	"regexp"
 	"strings"
 
+	"github.com/docker.bak/go-units"
 	"github.com/docker/docker/runconfig/opts"
 	"github.com/docker/engine-api/types/container"
 	"github.com/docker/engine-api/types/network"
 	"github.com/docker/engine-api/types/strslice"
 	"github.com/docker/go-connections/nat"
-	"github.com/docker/go-units"
 	"github.com/docker/libcompose/project"
 	"github.com/docker/libcompose/utils"
 )
@@ -53,11 +54,10 @@ func ConvertToAPI(s *Service) (*ConfigWrapper, error) {
 	return &result, nil
 }
 
-func volumes(c *project.ServiceConfig, ctx project.Context) map[string]struct{} {
+func volumes(c *project.ServiceConfig, ctx *Context) map[string]struct{} {
 	volumes := make(map[string]struct{}, len(c.Volumes))
 	for k, v := range c.Volumes {
-		vol := ctx.ResourceLookup.ResolvePath(v, ctx.ComposeFiles[0])
-
+		vol := LinuxPath(ctx.ResourceLookup.ResolvePath(v, ctx.ComposeFiles[0]))
 		c.Volumes[k] = vol
 		if isVolume(vol) {
 			volumes[vol] = struct{}{}
@@ -205,4 +205,18 @@ func parseDevices(devices []string) ([]container.DeviceMapping, error) {
 	}
 
 	return deviceMappings, nil
+}
+
+// LinuxPath converts a Windows path to a fully qualified unix path
+func LinuxPath(path string) string {
+	// Strip drive prefix c:/ etc.
+	// TODO: Need to find a way to deal with paths properly (i.e. what if multiple drives!)
+	r, _ := regexp.CompilePOSIX("(^[a-zA-Z]:)(\\.*)")
+	if r.MatchString(path) {
+		path = r.ReplaceAllString(path, "$2")
+	}
+
+	path = strings.Replace(path, "\\", "/", -1)
+	path = strings.Replace(path, "//", "/", -1)
+	return path
 }
